@@ -1,0 +1,35 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${APPLICATION_DB_NAME:application_db}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:MySQL@123}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+jwt:
+  secret: ${JWT_SECRET:VGhpc0lzQVNlY3VyZUJhc2U2NEVuY29kZWRTZWNyZXRLZXlGb3JKb2JQb3J0YWwyMDI2IQ==}
+
+springdoc:
+  swagger-ui:
+    enabled: false
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      jobService:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+      resumeService:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+  retry:
+    instances:
+      jobService:
+        max-attempts: 3
+        wait-duration: 500ms
+      resumeService:
+        max-attempts: 3
+        wait-duration: 500ms
+

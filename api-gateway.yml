@@ -1,0 +1,93 @@
+server:
+  port: 8080
+  forward-headers-strategy: framework
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/api/users/**
+            - id: job-service
+              uri: lb://job-service
+              predicates:
+                - Path=/api/jobs/**
+            - id: application-service
+              uri: lb://application-service
+              predicates:
+                - Path=/api/applications/**
+            - id: resume-service
+              uri: lb://resume-service
+              predicates:
+                - Path=/api/resumes/**
+            - id: notification-service
+              uri: lb://notification-service
+              predicates:
+                - Path=/api/notifications/**
+            - id: search-service
+              uri: lb://search-service
+              predicates:
+                - Path=/api/search/**
+            - id: user-docs
+              uri: lb://user-service
+              predicates:
+                - Path=/v3/api-docs/user-service
+              filters:
+                - RewritePath=/v3/api-docs/user-service,/v3/api-docs
+            - id: job-docs
+              uri: lb://job-service
+              predicates:
+                - Path=/v3/api-docs/job-service
+              filters:
+                - RewritePath=/v3/api-docs/job-service,/v3/api-docs
+            - id: application-docs
+              uri: lb://application-service
+              predicates:
+                - Path=/v3/api-docs/application-service
+              filters:
+                - RewritePath=/v3/api-docs/application-service,/v3/api-docs
+            - id: resume-docs
+              uri: lb://resume-service
+              predicates:
+                - Path=/v3/api-docs/resume-service
+              filters:
+                - RewritePath=/v3/api-docs/resume-service,/v3/api-docs
+            - id: notification-docs
+              uri: lb://notification-service
+              predicates:
+                - Path=/v3/api-docs/notification-service
+              filters:
+                - RewritePath=/v3/api-docs/notification-service,/v3/api-docs
+            - id: search-docs
+              uri: lb://search-service
+              predicates:
+                - Path=/v3/api-docs/search-service
+              filters:
+                - RewritePath=/v3/api-docs/search-service,/v3/api-docs
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: user-service
+        url: /v3/api-docs/user-service
+      - name: job-service
+        url: /v3/api-docs/job-service
+      - name: application-service
+        url: /v3/api-docs/application-service
+      - name: resume-service
+        url: /v3/api-docs/resume-service
+      - name: notification-service
+        url: /v3/api-docs/notification-service
+      - name: search-service
+        url: /v3/api-docs/search-service
+    urlsPrimaryName: user-service
+    tryItOutEnabled: true
+    persistAuthorization: true
+
+jwt:
+  secret: ${JWT_SECRET:VGhpc0lzQVNlY3VyZUJhc2U2NEVuY29kZWRTZWNyZXRLZXlGb3JKb2JQb3J0YWwyMDI2IQ==}
